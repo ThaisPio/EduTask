@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './screens/LoginScreen';  // Certifique-se que os caminhos para as telas estão corretos
+import LoginScreen from './screens/LoginScreen';  
 import RegisterScreen from './screens/RegisterScreen';
 import TaskListScreen from './screens/TaskListScreen';
 

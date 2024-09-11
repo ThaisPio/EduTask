@@ -1,9 +1,8 @@
 export const loginUser = async (email, password) => {
-  // Implementação do login
-  // Verificar no banco de dados ou API se as credenciais são válidas
+  
   try {
-    // Exemplo de chamada a uma API
-    const response = await fetch('https://api.meusite.com/login', {
+    
+    const response = await fetch('', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password })

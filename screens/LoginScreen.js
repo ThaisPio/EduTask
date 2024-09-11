@@ -1,17 +1,34 @@
 import React, { useState } from 'react';
-import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image } from 'react-native';
+import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image, Alert } from 'react-native';
 
 export default function LoginScreen({ navigation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const validCredentials = {
+    email: 'user@example.com',
+    password: 'Password123!',
+  };
 
+  // Função para validar o login
   const handleLogin = () => {
-    // Lógica de login
+    // Verifica se os campos estão preenchidos
+    if (!email || !password) {
+      Alert.alert('Erro', 'Por favor, preencha todos os campos');
+      return;
+    }
+
+    // Validação local das credenciais 
+    if (email === validCredentials.email && password === validCredentials.password) {
+      Alert.alert('Sucesso', 'Login realizado com sucesso!');
+      navigation.navigate('Home'); 
+    } else {
+      Alert.alert('Erro', 'Credenciais inválidas. Tente novamente.');
+    }
   };
 
   const handleForgotPassword = () => {
     // Navegar para a tela de recuperação de senha
-    navigation.navigate('ForgotPassword');  // Certifique-se de ter a tela de Esqueceu Senha implementada
+    navigation.navigate('ForgotPassword'); 
   };
 
   return (
@@ -19,23 +36,23 @@ export default function LoginScreen({ navigation }) {
       {/* Adicionando a logo no topo */}
       <Image source={require('../assets/logo.png')} style={styles.logo} />
 
-      <Text style={styles.label}>Login</Text>
+      <Text style={styles.label}>EduTask</Text>
       <TextInput 
         style={styles.input}
-        placeholder="Email"
+        placeholder="Email ou CPF"
         value={email}
         onChangeText={setEmail}
       />
       <TextInput 
         style={styles.input}
-        placeholder="Password"
+        placeholder="Senha"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
       
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
-        <Text style={styles.buttonText}>SIGN IN</Text>
+        <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
       <View style={styles.row}>
@@ -95,14 +112,14 @@ const styles = StyleSheet.create({
   },
   smallButton: {
     flex: 1,
-    backgroundColor: '#2196F3',
+    backgroundColor: '#109c1e',
     padding: 10,
     borderRadius: 5,
     alignItems: 'center',
     marginRight: 10,
   },
   forgotPasswordButton: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#109c1e',
     marginRight: 0,
   },
 });
