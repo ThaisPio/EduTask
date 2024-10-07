@@ -1,48 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Image, Alert } from 'react-native';
+import { findUser, createTable } from '../database/Database';  // Importa as funções do banco de dados
 
 export default function LoginScreen({ navigation }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const validCredentials = {
-    email: 'user@example.com',
-    password: 'Password123!',
-  };
+  const [emailOrCpf, setEmailOrCpf] = useState(''); // Campo de email ou CPF
+  const [password, setPassword] = useState(''); // Campo de senha
 
-  // Função para validar o login
-  const handleLogin = () => {
+  // Cria a tabela de usuários na primeira vez que a tela é carregada
+  useEffect(() => {
+    createTable(); // Certifique-se de que a tabela de usuários foi criada
+  }, []);
+
+  // Função de validação de login consultando o banco de dados SQLite
+  const handleLogin = async () => {
     // Verifica se os campos estão preenchidos
-    if (!email || !password) {
+    if (!emailOrCpf || !password) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos');
       return;
     }
 
-    // Validação local das credenciais 
-    if (email === validCredentials.email && password === validCredentials.password) {
-      Alert.alert('Sucesso', 'Login realizado com sucesso!');
-      navigation.navigate('Home'); 
-    } else {
-      Alert.alert('Erro', 'Credenciais inválidas. Tente novamente.');
+    try {
+      // Buscar o usuário no banco de dados
+      const user = await findUser(emailOrCpf, password); // Usa a função de busca no banco de dados
+      if (user) {
+        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+        navigation.navigate('Home'); // Redireciona para a tela Home após o login
+      } else {
+        Alert.alert('Erro', 'Credenciais inválidas. Tente novamente.');
+      }
+    } catch (error) {
+      Alert.alert('Erro', 'Ocorreu um erro ao realizar o login: ' + error.message);
     }
   };
 
+  // Função para recuperação de senha
   const handleForgotPassword = () => {
-    // Navegar para a tela de recuperação de senha
-    navigation.navigate('ForgotPassword'); 
+    navigation.navigate('ForgotPassword'); // Navega para a tela de recuperação de senha
   };
 
   return (
     <View style={styles.container}>
-      {/* Adicionando a logo no topo */}
+      {/* Adicionando a logo */}
       <Image source={require('../assets/logo.png')} style={styles.logo} />
 
       <Text style={styles.label}>EduTask</Text>
+
+      {/* Input para Email ou CPF */}
       <TextInput 
         style={styles.input}
         placeholder="Email ou CPF"
-        value={email}
-        onChangeText={setEmail}
+        value={emailOrCpf}
+        onChangeText={setEmailOrCpf}
       />
+
+      {/* Input para Senha */}
       <TextInput 
         style={styles.input}
         placeholder="Senha"
@@ -51,15 +62,18 @@ export default function LoginScreen({ navigation }) {
         onChangeText={setPassword}
       />
       
+      {/* Botão de Login */}
       <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
       <View style={styles.row}>
+        {/* Botão de Registro */}
         <TouchableOpacity style={styles.smallButton} onPress={() => navigation.navigate('Register')}>
           <Text style={styles.buttonText}>Cadastre-se</Text>
         </TouchableOpacity>
-        
+
+        {/* Botão de Recuperação de Senha */}
         <TouchableOpacity style={[styles.smallButton, styles.forgotPasswordButton]} onPress={handleForgotPassword}>
           <Text style={styles.buttonText}>Esqueceu senha</Text>
         </TouchableOpacity>
@@ -68,6 +82,7 @@ export default function LoginScreen({ navigation }) {
   );
 }
 
+// Estilos do Componente
 const styles = StyleSheet.create({
   container: {
     flex: 1,

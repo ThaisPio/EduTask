@@ -1,100 +1,82 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet, Alert } from 'react-native';
+import { addUser } from '../database/Database';  // Importa as funções de AsyncStorage
 
 export default function RegisterScreen({ navigation }) {
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [cpfEmail, setCpfEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [name, setName] = useState(''); // Nome do usuário
+  const [phone, setPhone] = useState(''); // Número de celular
+  const [cpfEmail, setCpfEmail] = useState(''); // CPF ou Email
+  const [password, setPassword] = useState(''); // Senha
 
-  // Validação de email usando regex
-  const isValidEmail = (email) => {
-    const regex = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
-    return regex.test(email);
-  };
-
-  // Validação de CPF (apenas números, sem formatação)
-  const isValidCPF = (cpf) => {
-    const regex = /^\d{11}$/;  // CPF deve ter exatamente 11 dígitos numéricos
-    return regex.test(cpf);
-  };
-
-  // Validação do número de celular (somente números, deve ter 11 dígitos)
-  const isValidPhone = (phone) => {
-    const regex = /^\d{11}$/;  
-    return regex.test(phone);
-  };
-
-  // Validação da senha com letras, números e caracteres especiais
-  const isValidPassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-    return regex.test(password);
-  };
-
-  const handleRegister = () => {
-    // Validação dos campos
+  const handleRegister = async () => {
+    // Validar se todos os campos estão preenchidos
     if (!name || !phone || !cpfEmail || !password) {
       Alert.alert('Erro', 'Por favor, preencha todos os campos');
       return;
     }
 
-    // Verificar se o campo CPF ou e-mail contém um e-mail válido ou CPF válido 
+    // Validações de CPF ou Email e telefone
     if (!isValidEmail(cpfEmail) && !isValidCPF(cpfEmail)) {
-      Alert.alert('Erro', 'Por favor, insira um e-mail ou CPF válido (CPF deve ter 11 dígitos)');
+      Alert.alert('Erro', 'Por favor, insira um e-mail ou CPF válido');
       return;
     }
 
-    // Verificar se o número de telefone é válido 
     if (!isValidPhone(phone)) {
-      Alert.alert('Erro', 'Por favor, insira um número de celular válido com 11 dígitos (apenas números)');
+      Alert.alert('Erro', 'Por favor, insira um número de celular válido');
       return;
     }
 
-    // Verificar se a senha é válida 
     if (!isValidPassword(password)) {
       Alert.alert('Erro', 'A senha deve ter pelo menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e caracteres especiais.');
       return;
     }
 
-   
-    Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
-    
-    // Depois de cadastrar, redirecionar para a tela de login
-    navigation.navigate('Login');
+    // Tentar adicionar o usuário
+    try {
+      await addUser(
+        name,
+        isValidEmail(cpfEmail) ? cpfEmail : '', // Email, se válido
+        password,
+        isValidCPF(cpfEmail) ? cpfEmail : '', // CPF, se válido
+        phone
+      );
+      Alert.alert('Sucesso', 'Usuário cadastrado com sucesso!');
+      navigation.navigate('Login'); // Redireciona para a tela de login
+    } catch (error) {
+      console.error('Erro ao cadastrar o usuário:', error);
+      Alert.alert('Erro', 'Erro ao cadastrar o usuário: ' + error.message);
+    }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Criar cadastro</Text>
-
-      <TextInput 
+      <Text style={styles.label}>Criar Cadastro</Text>
+      <TextInput
         style={styles.input}
         placeholder="Nome completo"
         value={name}
         onChangeText={setName}
       />
-      <TextInput 
+      <TextInput
         style={styles.input}
-        placeholder="Número de celular (somente números)"
+        placeholder="Número de celular"
         value={phone}
         onChangeText={setPhone}
-        keyboardType="numeric"  // Permite apenas números no teclado
+        keyboardType="phone-pad"
       />
-      <TextInput 
+      <TextInput
         style={styles.input}
-        placeholder="CPF ou e-mail"
+        placeholder="CPF ou Email"
         value={cpfEmail}
         onChangeText={setCpfEmail}
-        keyboardType="email-address"
       />
-      <TextInput 
+      <TextInput
         style={styles.input}
-        placeholder="Senha (8 Dígitos, letras, números e caracteres especiais)"
+        placeholder="Senha"
         secureTextEntry
         value={password}
         onChangeText={setPassword}
       />
-      
       <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
         <Text style={styles.buttonText}>Salvar</Text>
       </TouchableOpacity>
@@ -102,6 +84,13 @@ export default function RegisterScreen({ navigation }) {
   );
 }
 
+// Funções de validação
+const isValidEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+const isValidCPF = (cpf) => /^\d{11}$/.test(cpf);
+const isValidPhone = (phone) => /^\d{11}$/.test(phone);
+const isValidPassword = (password) => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/.test(password);
+
+// Estilos do componente
 const styles = StyleSheet.create({
   container: {
     flex: 1,
