@@ -1,8 +1,7 @@
 {
   "expo": {
-    "name": "EduTask",
-    "displayName": "EduTask",
-    "slug": "EduTask",
+    "name": "MyEduTaskApp",
+    "slug": "MyEduTaskApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -12,14 +11,14 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "ios": {
-      "supportsTablet": true
-    },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       }
+    },
+    "ios": {
+      "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
