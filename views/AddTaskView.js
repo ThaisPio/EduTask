@@ -3,10 +3,11 @@ import { View, TextInput, Button } from 'react-native';
 import { handleAddTask } from '../controllers/TaskController';
 
 const AddTaskView = () => {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [dueDate, setDueDate] = useState('');
+  const [title, setTitle] = useState(''); //Armazena o título da tarefa
+  const [description, setDescription] = useState(''); // Armazena a descrição da tarefa
+  const [dueDate, setDueDate] = useState(''); //Armazena a data de vencimento da tarefa.
 
+  //Esta função é chamada quando o usuário clica no botão "Adicionar Tarefa".
   const addTask = () => {
     handleAddTask(title, description, dueDate, () => {
       setTitle('');
