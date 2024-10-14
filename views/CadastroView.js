@@ -3,6 +3,7 @@ import { View, TextInput, Button, Alert, StyleSheet, Text } from 'react-native';
 import { validateCPF, maskPhone } from '../utils/Masks';
 import { handleAddUser } from '../controllers/UserController'; // Importar a função para adicionar o usuário
 
+//Gerencia os campos do formulário de cadastro do usuário
 const CadastroView = ({ navigation }) => {
   const [name, setName] = useState('');
   const [cpfEmail, setCpfEmail] = useState(''); // Campo que será CPF ou Email
