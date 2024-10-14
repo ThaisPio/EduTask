@@ -1,5 +1,5 @@
 import { db } from '../database/database'
-
+//Esta função é responsável por inserir um novo usuário na tabela users do banco de dados
 export const insertUser = async (name, cpf_email, phone, password, successCallback) => {
     try {
         db.transaction(tx => {
@@ -14,7 +14,7 @@ export const insertUser = async (name, cpf_email, phone, password, successCallba
         console.log('Erro ao inserir usuário:', error);
     }
 };
-
+//Esta função é usada para verificar se o login de um usuário é válido, ou seja, se o CPF/e-mail e a senha estão corretos
 export const validateUserLogin = async (cpf_email, password, successCallback, errorCallback) => {
     try {
       db.transaction(tx => {
