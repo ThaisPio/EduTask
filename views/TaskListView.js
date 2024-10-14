@@ -20,7 +20,7 @@ const TaskListView = () => {
 
   const route = useRoute();
   const { user_id } = route.params;
-
+//Busca as tarefas associadas ao user_id e atualiza o estado tasks para exibi-las na interface.
   const fetchTasks = () => {
     if (!user_id) {
       console.log('Usuário não está logado');
@@ -53,7 +53,7 @@ const TaskListView = () => {
     setShowDatePicker(false);
     setNewTaskDueDate(currentDate);
   };
-
+//Verifica se a data selecionada não é retroativa
   const addTask = async () => {
     const currentDateTime = new Date();
     if (newTaskDueDate < currentDateTime) {
@@ -65,7 +65,7 @@ const TaskListView = () => {
       Alert.alert('Preencha todos os campos');
       return;
     }
-
+//Adiciona a nova tarefa no banco de dados e, em seguida, limpa o formulário e atualiza a lista de tarefas.
     await handleAddTask(newTaskTitle, newTaskDescription, newTaskDueDate.toISOString(), newTaskPriority, newTaskService, user_id, fetchTasks);
     resetForm();
     fetchTasks();
@@ -73,7 +73,7 @@ const TaskListView = () => {
 
   const editTask = async () => {
     if (!selectedTask) return;
-
+    //Atualiza uma tarefa existente com as novas informações inseridas no formulário
     await handleUpdateTask(selectedTask.id, newTaskTitle, newTaskDescription, newTaskDueDate.toISOString(), newTaskPriority, newTaskService, fetchTasks);
     resetForm();
     fetchTasks();
@@ -114,7 +114,7 @@ const TaskListView = () => {
               <Text>{new Date(item.due_date).toLocaleString() || 'Data não definida'}</Text>
               <Text>{item.priority || 'Prioridade não definida'}</Text>
               <Text>{item.service || 'Serviço não definido'}</Text>
-              <Button title="Excluir" onPress={() => handleDeleteTask(item.id, fetchTasks)} />
+              <Button title="Excluir" onPress={() => handleDeleteTask(item.id, fetchTasks)} />//Chama a função handleDeleteTask para remover a tarefa selecionada do banco de dados.
             </View>
           </TouchableOpacity>
         )}
