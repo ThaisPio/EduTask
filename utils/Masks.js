@@ -1,4 +1,4 @@
-
+//Essa função valida se um número de CPF é válido 
 export const validateCPF = (cpf) => {
     cpf = cpf.replace(/[^\d]+/g, ''); // Remove caracteres não numéricos
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
@@ -19,7 +19,7 @@ export const validateCPF = (cpf) => {
   
     return true;
   };
-
+//Essa função formata um número de telefone, inserindo parênteses ao redor do DDD e colocando um hífen no meio do número
   export const maskPhone = (phone) => {
     phone = phone.replace(/\D/g, ''); // Remove caracteres que não são números
     phone = phone.replace(/^(\d{2})(\d)/g, '($1) $2'); // Coloca parênteses no DDD
