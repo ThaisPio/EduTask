@@ -1,6 +1,6 @@
 import { db } from '../database/database';
 
-// Função para inserir uma nova tarefa
+// Função para inserir uma nova tarefa na tabela tasks
 export const insertTask = (title, description, dueDate, priority, service, user_id, successCallback) => {
   db.transaction(tx => {
     tx.executeSql(
@@ -12,7 +12,7 @@ export const insertTask = (title, description, dueDate, priority, service, user_
   });
 };
 
-// Função para buscar as tarefas pelo user_id
+// Função para buscar todas as tarefas associadas a um determinado usuário, identificado pelo user_id.
 export const getTasks = (user_id, successCallback) => {
   db.transaction(tx => {
     tx.executeSql(
@@ -24,7 +24,7 @@ export const getTasks = (user_id, successCallback) => {
   });
 };
 
-// Função para excluir uma tarefa
+//Esta função exclui uma tarefa específica, identificada pelo id.
 export const deleteTask = (id, successCallback) => {
   db.transaction(tx => {
     tx.executeSql(
@@ -36,7 +36,7 @@ export const deleteTask = (id, successCallback) => {
   });
 };
 
-// Função para atualizar uma tarefa
+// Função para atualizar uma tarefa no banco de dados
 export const updateTask = (id, title, description, dueDate, priority, service, successCallback) => {
   db.transaction(tx => {
     tx.executeSql(
