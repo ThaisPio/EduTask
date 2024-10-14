@@ -4,16 +4,18 @@ import { useNavigation } from '@react-navigation/native';
 import { getUser } from '../controllers/UserController';
 
 const LoginView = () => {
-  const [cpfEmail, setCpfEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [cpfEmail, setCpfEmail] = useState(''); //Armazena o CPF ou e-mail inserido pelo usuário
+  const [password, setPassword] = useState(''); //Armazena a senha inserida pelo usuário.
   const navigation = useNavigation(); 
 
+  //Chama a função getUser para validar as credenciais inseridas.  
   const handleLogin = () => {
+    //Se o usuário for encontrado, ele será redirecionado para a tela de lista de tarefas (TaskList).
     getUser(cpfEmail, password, (user) => {
       if (user) {
         Alert.alert('Login bem-sucedido');
         navigation.navigate('TaskList', { user_id: user.id });
-      } else {
+      } else { //Se as credenciais forem inválidas ou houver erro, uma mensagem de alerta é exibida.
         Alert.alert('Credenciais inválidas', 'CPF/E-mail ou senha estão incorretos.');
       }
     }, (error) => {
@@ -26,7 +28,7 @@ const LoginView = () => {
 
   return (
     <View style={styles.container}>
-      {/* Adiciona a logo aqui */}
+      // Exibe uma logo no topo da tela.
       <Image 
         source={require('../assets/logo2.png')} 
         style={styles.logo}
