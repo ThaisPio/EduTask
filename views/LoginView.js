@@ -28,7 +28,7 @@ const LoginView = () => {
     <View style={styles.container}>
       {/* Adiciona a logo aqui */}
       <Image 
-        source={require('../assets/logo2.png')} // Certifique-se de que o caminho para a logo está correto
+        source={require('../assets/logo2.png')} 
         style={styles.logo}
       />
 
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
-  logo: {  // Novo estilo para a logo
+  logo: {  
     width: 150,
     height: 150,
     resizeMode: 'contain',
