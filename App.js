@@ -5,7 +5,7 @@ import TaskListView from './views/TaskListView';
 
 import LoginView from './views/LoginView'; // Importando a tela de Login
 import CadastroView from './views/CadastroView'; // Importando a tela de Cadastro
-import { setupDatabase, resetDatabase } from './database/database'; // Remover dropUsersTable daqui
+import { setupDatabase, resetDatabase } from './database/database'; 
 
 const Stack = createStackNavigator();
 
